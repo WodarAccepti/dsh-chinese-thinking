@@ -30,7 +30,7 @@
    本地开发目录直接用绝对路径也可以：
 
    ```text
-   D:\Agent\dsh-chinese-thinking
+   D:\path\to\dsh-chinese-thinking
    ```
 
 4. 点 安装，装完刷新页面。
@@ -42,13 +42,13 @@
 dsh plugin --profile web add dsh-chinese-thinking
 
 # 指定本地目录（相对路径会以你当前所在目录为基准解析）
-dsh plugin --profile web add D:/Agent/dsh-chinese-thinking
+dsh plugin --profile web add D:/path/to/dsh-chinese-thinking
 ```
 
 > **桌面版（DeepSeek Harness Desktop）注意**：桌面版的 `desktop` profile 由应用独占管理，命令行必须先**完全退出应用**再执行：
 >
 > ```text
-> "D:\dsh\resources\runtime\cli\bin\dsh.cmd" plugin --profile desktop add D:\Agent\dsh-chinese-thinking
+> "<DSH 安装目录>\resources\runtime\cli\bin\dsh.cmd" plugin --profile desktop add D:\path\to\dsh-chinese-thinking
 > ```
 >
 > 装完重新打开应用。
@@ -86,8 +86,8 @@ dsh plugin --profile web add D:/Agent/dsh-chinese-thinking
 
 - `inject = ['systemPrompt']` —— 只有提供 `systemPrompt` 服务的 profile 才激活，其它 profile 里插件保持休眠而不是报错。
 - `ctx.effect(() => ctx.systemPrompt.section({...}))` —— 段落随插件卸载自动注销。
-- `interpolate: false` —— **刻意关闭插值**。段落文本默认会被当作模板解析 `{{变量}}`，出现未知引用会让整个提示词组装抛错，所以插件自己替换 `{{language}}` 并关闭插值。
-- 配置非法（`order` 不是有限数、`language` 为空串等）时**显式抛 `TypeError`**，让错误在启动期暴露，而不是静默失效。
+- `interpolate: false` —— 刻意关闭插值。段落文本默认会被当作模板解析 `{{变量}}`，出现未知引用会让整个提示词组装抛错，所以插件自己替换 `{{language}}` 并关闭插值。
+- 配置非法（`order` 不是有限数、`language` 为空串等）时显式抛 `TypeError`，让错误在启动期暴露，而不是静默失效。
 
 ## 兼容性
 
@@ -122,7 +122,7 @@ node tools/verify-package.mjs release/dsh-chinese-thinking-1.0.0.tgz
 
 - `tools/pack-release.mjs`：先跑冒烟测试，再按 `package.json` 的 `files` 白名单打 npm 包（自实现 tar+gzip，不依赖 npm），同时导出源码 zip，最后写出 `SHA256SUMS`。
 - `tools/verify-package.mjs`：解开 tgz，断言首个条目是 `package/package.json`（npm 约定）、所有条目都是普通文件、并与仓库源文件**逐字节比对**。
-- `release/` 下的三个文件就是 GitHub Release 的直传内容：`dsh-chinese-thinking-1.0.0.tgz`、`dsh-chinese-thinking-1.0.0-source.zip`、`SHA256SUMS`。
+- `release/` 下的三个文件就是 GitHub Release 的直传内容：`dsh-chinese-thinking-1.0.0.tgz`、`dsh-chinese-thinking-1.0.0-source.zip`、`SHA256SUMS`。`release/` 声明在 `.gitignore` 里，不进源码仓库。
 
 ## 许可证
 
