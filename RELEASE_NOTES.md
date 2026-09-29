@@ -1,12 +1,12 @@
 # 发布说明 —— dsh-chinese-thinking v1.0.0
 
-让 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）的**思考链（thinking / reasoning）固定用中文**的零依赖插件：向 Host 的系统提示词注册一个全局段落，因此 profile 内每个 Agent（含子 Agent）都用配置的语言思考，**面向用户的回答语言不受影响**。
+让 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）的思考链（thinking / reasoning）固定用中文的零依赖插件：向 Host 的系统提示词注册一个全局段落，因此 profile 内每个 Agent（含子 Agent）都用配置的语言思考，面向用户的回答语言不受影响。
 
 ## 安装
 
 ### 方式一：直接装 Release 里的 tgz（推荐）
 
-下载本 Release 的 `dsh-chinese-thinking-1.0.0.tgz`，然后在 **DSH Web 界面 → 插件 → 添加插件** 里填这个文件在本机的**绝对路径**：
+下载本 Release 的 `dsh-chinese-thinking-1.0.0.tgz`，然后在 DSH Web 界面 → 插件 → 添加插件 里填这个文件在本机的绝对路径：
 
 ```text
 D:\Downloads\dsh-chinese-thinking-1.0.0.tgz
@@ -18,7 +18,7 @@ D:\Downloads\dsh-chinese-thinking-1.0.0.tgz
 dsh plugin --profile web add D:/Downloads/dsh-chinese-thinking-1.0.0.tgz
 ```
 
-> 桌面版（DeepSeek Harness Desktop）的 `desktop` profile 由应用独占管理，命令行需要先**完全退出应用**：
+> 桌面版（DeepSeek Harness Desktop）的 `desktop` profile 由应用独占管理，命令行需要先完全退出应用：
 >
 > ```text
 > "<DSH 安装目录>\resources\runtime\cli\bin\dsh.cmd" plugin --profile desktop add D:\Downloads\dsh-chinese-thinking-1.0.0.tgz
@@ -26,7 +26,7 @@ dsh plugin --profile web add D:/Downloads/dsh-chinese-thinking-1.0.0.tgz
 
 ### 方式二：解压源码包
 
-下载 `dsh-chinese-thinking-1.0.0-source.zip`，解压到任意目录，然后按上面的方式用**目录绝对路径**安装（例如 `D:\path\to\dsh-chinese-thinking`）。
+下载 `dsh-chinese-thinking-1.0.0-source.zip`，解压到任意目录，然后按上面的方式用目录绝对路径安装（例如 `D:\path\to\dsh-chinese-thinking`）。
 
 ### 方式三：从仓库安装
 
