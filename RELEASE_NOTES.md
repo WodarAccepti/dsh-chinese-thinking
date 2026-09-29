@@ -21,12 +21,12 @@ dsh plugin --profile web add D:/Downloads/dsh-chinese-thinking-1.0.0.tgz
 > 桌面版（DeepSeek Harness Desktop）的 `desktop` profile 由应用独占管理，命令行需要先**完全退出应用**：
 >
 > ```text
-> "D:\dsh\resources\runtime\cli\bin\dsh.cmd" plugin --profile desktop add D:\Downloads\dsh-chinese-thinking-1.0.0.tgz
+> "<DSH 安装目录>\resources\runtime\cli\bin\dsh.cmd" plugin --profile desktop add D:\Downloads\dsh-chinese-thinking-1.0.0.tgz
 > ```
 
 ### 方式二：解压源码包
 
-下载 `dsh-chinese-thinking-1.0.0-source.zip`，解压到任意目录，然后按上面的方式用**目录绝对路径**安装（例如 `D:\dsh-chinese-thinking`）。
+下载 `dsh-chinese-thinking-1.0.0-source.zip`，解压到任意目录，然后按上面的方式用**目录绝对路径**安装（例如 `D:\path\to\dsh-chinese-thinking`）。
 
 ### 方式三：从仓库安装
 
