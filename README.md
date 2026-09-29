@@ -2,7 +2,7 @@
 
 让 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）的**思考链（thinking / reasoning）固定用中文**的零依赖插件。
 
-它只做一件事：向 Host 的系统提示词注册**一个**全局段落，因此该 profile 里的每个 Agent——主 Agent、子 Agent、workflow 里的 Agent——都会用你配置的语言思考。**面向用户的回答语言不受影响**，仍然跟随用户。
+它只做一件事：向 Host 的系统提示词注册一个全局段落，因此该 profile 里的每个 Agent——主 Agent、子 Agent、workflow 里的 Agent——都会用你配置的语言思考。面向用户的回答语言不受影响，仍然跟随用户。
 
 ```
 用户问什么语言  →  回答就用什么语言（不变）
@@ -13,15 +13,15 @@
 
 推理模型的思考语言会漂移：中文提问、英文思考，或者在同一轮里中英混杂。思考链是模型做规划、比较、调试和自我检查的地方，语言漂移会让长任务越跑越散；对中文使用者来说，中文思考链也更容易复核模型的判断依据。
 
-本插件不翻译、不拦截输出、不改任何请求参数，只是在系统提示词里加一条明确的思考语言规则。
+本插件不翻译、不拦截输出、不改请求参数，只在系统提示词里加一条思考规则。
 
 ## 安装
 
-### 方式一：Web 界面插件页（推荐）
+### 方式一：Web 界面插件页
 
-1. 打开 DSH Web 界面，左侧边栏点 **插件**（Plugins）。
-2. 点 **添加插件**（Add plugin）。
-3. 在包名输入框里填**包名**（不是 GitHub 地址，也不是 `git+` 地址）：
+1. 打开 DSH Web 界面，左侧边栏点 插件（Plugins）。
+2. 点 添加插件（Add plugin）。
+3. 在包名输入框里填仓库名（不是 GitHub 地址，不是 `git+` 地址）：
 
    ```text
    dsh-chinese-thinking
@@ -33,7 +33,7 @@
    D:\Agent\dsh-chinese-thinking
    ```
 
-4. 点 **安装**，装完刷新页面。
+4. 点 安装，装完刷新页面。
 
 ### 方式二：CLI
 
@@ -53,36 +53,9 @@ dsh plugin --profile web add D:/Agent/dsh-chinese-thinking
 >
 > 装完重新打开应用。
 
-### 方式三：手工链接（应用正在运行、又不方便重启时）
-
-把插件目录链接进 profile 的 `node_modules`，并把包名加进 `package.json` 的 `dsh.profile.bundles`：
-
-```powershell
-$profileDir = "$env:USERPROFILE\.dsh\profiles\desktop"
-New-Item -ItemType Junction -Path "$profileDir\node_modules\dsh-chinese-thinking" -Target "D:\Agent\dsh-chinese-thinking"
-```
-
-然后编辑 `$profileDir\package.json`：
-
-```json
-{
-  "dsh": {
-    "profile": {
-      "bundles": [
-        "@deepseek-ai/dsh-base",
-        "@deepseek-ai/dsh-web-app",
-        "dsh-chinese-thinking"
-      ]
-    }
-  }
-}
-```
-
-bundle 列表在启动时读取，**改完要重启应用**才生效。
-
 ## 配置
 
-配置既可以写在插件代码的默认值里，也可以在 profile 的 `cordis.patch.yml` 里**按行 id 覆盖**——本插件不声明 Config schema，行的 `config` 会原样传进来：
+配置既可以写在插件代码的默认值里，也可以在 profile 的 `cordis.patch.yml` 里按行 id 覆盖——本插件不声明 Config schema，行的 `config` 会原样传进来：
 
 ```yaml
 - id: dsh-chinese-thinking
@@ -127,9 +100,9 @@ bundle 列表在启动时读取，**改完要重启应用**才生效。
 
 ## 已知边界
 
-- 这是**提示词层**的约束，不是解码参数：模型偶尔仍可能蹦出英文单词，属于正常现象；对结果敏感的场景可以在 `text` 里加更强制的话术。
-- 它不翻译已经生成的内容，也不改变 `reasoning_effort`/思考预算——那是另一类插件（如 `dsh-thinking-levels`）的职责。
-- 同一 profile 内**不要同时装多个同类插件**（例如 `@max-null/dsh-chinese-thinking`、`dsh-zh-reasoning`），它们都往系统提示词里塞「用中文思考」的段落，重复注入浪费 token 且可能互相拉扯。
+- 这是*提示词层的约束，不是解码参数：模型偶尔仍可能蹦出英文单词，属于正常现象；对结果敏感的场景可以在 `text` 里加更强制的话术。
+- 它不翻译已经生成的内容，也不改变 `reasoning_effort`/思考预算——那是另一类插件的职责。
+- 同一 profile 内不要同时装多个同类插件，它们都往系统提示词里塞用中文思考的段落，重复注入浪费 token 且可能互相拉扯。
 
 ## 开发与自测
 
@@ -137,7 +110,7 @@ bundle 列表在启动时读取，**改完要重启应用**才生效。
 node tests/smoke.mjs        # 5 条行为 + 清单/补丁一致性
 ```
 
-冒烟测试用一个假的 `systemPrompt` 上下文覆盖 5 条路径：默认配置、配置覆盖、显式停用、以及两条必须抛错的非法配置。测试断言段落名唯一、`order` 生效、`interpolate` 关闭、`{{language}}` 被替换、并且**没有未解析的 `{{` 残留**；最后还校验 `package.json` 与 `cordis.patch.yml` 对包名的约定一致，避免 bundle 补丁指向解析不到的模块。
+冒烟测试用一个假的 `systemPrompt` 上下文覆盖 5 条路径：默认配置、配置覆盖、显式停用、以及两条必须抛错的非法配置。测试断言段落名唯一、`order` 生效、`interpolate` 关闭、`{{language}}` 被替换、并且没有未解析的 `{{` 残留；最后还校验 `package.json` 与 `cordis.patch.yml` 对包名的约定一致，避免 bundle 补丁指向解析不到的模块。
 
 ## 打包发布
 
