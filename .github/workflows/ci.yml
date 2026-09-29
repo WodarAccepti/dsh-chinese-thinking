@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: smoke test (node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22', '24']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Run smoke test
+        run: node tests/smoke.mjs
+      - name: Check published files
+        run: |
+          npm pack --dry-run
+          node -e "const m=require('./package.json'); for (const f of ['lib/index.js','cordis.patch.yml','README.md','LICENSE']) if (!m.files.some(g => f === g || f.startsWith(g + '/'))) throw new Error('not published: ' + f)"
