@@ -1,0 +1,31 @@
+name: Publish
+
+# 由 tag 触发：git tag v1.0.1 && git push origin v1.0.1
+# 需要仓库 Secrets 里的 NPM_TOKEN（Automation 类型），仓库设置里配置。
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: publish to npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: https://registry.npmjs.org
+      - name: Run smoke test
+        run: node tests/smoke.mjs
+      - name: Check tag matches package version
+        run: |
+          node -e "const v=require('./package.json').version, t=process.env.GITHUB_REF_NAME.replace(/^v/,''); if (v!==t) throw new Error('tag ' + t + ' !== package version ' + v)"
+      - name: Publish
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
