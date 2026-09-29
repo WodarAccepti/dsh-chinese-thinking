@@ -1,0 +1,11 @@
+# dsh-chinese-thinking 的 bundle patch —— 把插件行插入 profile 的配置树。
+#
+# 安装由 Plugin Manager 完成（Web 界面「插件」面板），它会引用本文件并把
+# 包文件名登记进 profile 的 bundle 列表；不要手工改写 profile 的
+# package.json / cordis.patch.yml。
+#
+# 行 id `dsh-chinese-thinking` 就是 profile 补丁层里覆盖本行 config 时使用的键：
+
+- insert:
+    - id: dsh-chinese-thinking
+      name: dsh-chinese-thinking

@@ -1,0 +1,51 @@
+{
+  "name": "dsh-chinese-thinking",
+  "version": "1.0.0",
+  "description": "让 DeepSeek Harness 的思考链（reasoning）固定为中文：向系统提示词注册一个全局段落，回答语言不受影响。",
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "cordis",
+    "thinking",
+    "reasoning",
+    "chinese",
+    "简体中文"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "RELEASE_NOTES.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node tests/smoke.mjs"
+  },
+  "engines": {
+    "node": ">=20",
+    "dsh": ">=0.1.5-rc.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WodarAccepti/dsh-chinese-thinking.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WodarAccepti/dsh-chinese-thinking/issues"
+  },
+  "homepage": "https://github.com/WodarAccepti/dsh-chinese-thinking#readme",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "license": "MIT"
+}
